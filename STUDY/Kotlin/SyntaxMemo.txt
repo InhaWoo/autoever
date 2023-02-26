@@ -1,0 +1,125 @@
+// 변수 선언
+    var myInt: Int = 4
+    var myUInt: UInt = 4u
+    var myLong: Long = 5L
+    var myFloat: Float = 4.2f
+    var myDouble: Double = 4.3
+    var myHexInt: Int = 0x000A
+    var myBinInt: Int = 0b0111
+    var myChar: Char = 'D'
+    var myByte: Byte = 2
+    var myShort: Short = 5
+    var myString: String = "inha"
+
+// 타입 캐스팅
+    myInt = myLong.toInt()
+
+// 비트 연산자 (shifting, and, or, xor)
+    var leftShift  = 1 shl 2 // shift left,  0100
+    var rightShift = 0b0100.shr(2) // shift right, 0001
+    var INT_MAX: UInt = (1 shl 31).toUInt() // shift left, 214748364
+    var and = 1 and 0x00001111
+    var or  = 1 or  0x00001111
+    var xor = 1 xor 0x00001111
+
+// String은 쌍따옴표, 혹은 3쌍따옴표로 만듬(escape문자 필요없음)
+    var myString1: String = "<Sale>\nPrice : \$100,000"
+    var myString2: String = """<Sale>
+Price : $100,000"""
+
+// Array 선언
+    var myArray = arrayOf(1,2,3)
+    var mySquareArray1 = Array(10, {k -> k * k }) // {0,1,4,9,16,...,1024}
+    var mySquareArray2 = Array(10, { it * it }) // {0,1,4,9,16,...,1024}
+
+// Array 출력
+    println(myArray.contentToString()) // "[1, 2, 3]"
+    println(myArray.joinToString()) // "1, 2, 3", int array 같이 primitive array에 가능
+
+// range 객체 연산자 '..', 'in', 'downTo', 'rangeTo', 'step', 'reversed'
+// range는 처음, 끝, 간격(delta)으로 정의된다는 점을 기억하면 쉬움.
+    val aToz = "A".."Z"
+    val isCapitalLetter = "c" in aToz // false
+    val myDescendingOrder1 = 5.downTo(1) // range 5,4,3,2,1
+    val myDescendingOrder2 = 5 downTo 1 // range 5,4,3,2,1
+    val myAscendingOrder1 = 5.downTo(9) // range 5,6,7,8,9
+    val myAscendingOrder2 = 5 downTo 9 // range 5,6,7,8,9
+    val my13579_1 = (1..10).step(2) // range 1,3,5,7,9 (step함수는 먼저 range를 만든 뒤 사용가능)
+    val my13579_2 = 1..10 step 2 // range 1,3,5,7,9 (step함수는 먼저 range를 만든 뒤 사용가능)
+    val my97531_1 = my13579_1.reversed() // range 9,7,5,3,1
+
+// for loops
+    // for ('elem' in 'range') 형식으로 쓰면 됨.
+
+    // 1. 횟수
+    for (i in 1..5){
+        print(i)
+    }; println() // 12345
+
+    // 2. 배열
+    for (i in intArrayOf(0,1,0,5,3,1,8,6,4,6,1)){
+        print(i)
+    }; println() // 01053186461
+
+    // 3. 내림차순
+    for (i in 5 downTo 1){
+        print(i)
+    }; println() // 54321
+
+    // 4. 내림차순, step
+    for (i in 9 downTo 0 step 2){
+        print(i)
+    }; println() // 97531
+
+    // 5. String
+    val tmpString: String = "InHa"
+    for (i in tmpString){
+        print(i.toString()+" ")
+    }; println() // I n h a
+
+    // 6. index가 필요할 땐 .indices를 활용
+    val tmpArray = arrayOf(1,2,3)
+    for (i in tmpArray.indices){
+        println("Index $i : ${tmpArray[i]}")
+    }
+
+// class 변수 선언 (new 없이 그냥 쓰면 됨)
+    class Vector2D(var x: Double, var y: Double){
+        constructor() : this(0.0, 0.0)
+        fun biggerValue(): Double = if (x>y) x else y
+    }
+    var myVec = Vector2D(3.0, 4.0)
+    println("${myVec.x} ${myVec.y} ${myVec.biggerValue()}")
+    var myVec2 = Vector2D()
+    println("${myVec2.x} ${myVec2.y} ${myVec2.biggerValue()}")
+
+// 변수 여러 개 출력하는 코드 (""안에서 $를 적극 활용!)
+    val tmpInt1 = 1;
+    val tmpInt2 = 2;
+    val tmpInt3 = 3;
+    println("$tmpInt1, $tmpInt2, $tmpInt3")
+
+// 사용자 입력 받고, 리스트에 저장
+    val myList: List<Int>? = readLine()?.split(" ")?.map{it.toInt()}
+    // ? : nullable 값을 담는다는 뜻
+    // readLine()? : 사용자 입력을 ASCII String으로 받음.
+    // split(" ") : " "로 구분된 데이터들을 List<T>를 반환.
+    // map{code} : 리스트의 원소들마다 code 로직을 적용하여 저장.
+    // it : 람다 표현식에서, 원소 각각을 뜻하는 변수명.
+    // it.toInt() : 원소 각각을 int로 바꾸라는 뜻.
+    // 예) input : "1 2" -> result : myList = [1,2]
+
+// 사용자 입력 정수 2개 받고, 그것들의 합을 출력
+    print(readln().sumOf{it-' '}-32)
+    // readln() : 사용자 입력을 ASCII String으로 받음.
+    // sumOf : 합을 구해줌. 람다 표현식을 인자로 가짐.
+    // {it-' '} : 문자열의 문자 각각마다 ' '만큼 빼주는 람다식. ' '(32)를 각각 빼줌.
+    // -32 : '0'은 48에 해당함. 앞에서 ' '(32)를 뺐으니 숫자들마다 16을 추가로 더 뺴줘야 함. 숫자가 2개니까 32를 빼줌
+    // 예) input : "1 2" -> result : 3을 출력
+
+// 사용자 입력 정수 n개 받고, 그것들의 합을 출력_2
+    print(readln().split(" ").sumOf{it.toInt()})
+    // readln() : 사용자 입력을 ASCII String으로 받음.
+    // split(" ") : " "로 구분된 데이터들을 List<T>를 반환.
+    // sumOf : 합을 구해줌. 람다 표현식을 인자로 가짐.
+    // 예) input : "1 2" -> result : 3을 출력
