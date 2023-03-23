@@ -103,6 +103,48 @@ class DocumentImpl : Document {
     // No need to implement getDescription() as Java.
 }
 
+// inheritance
+open class Shape(val name: String) {
+    open fun area(): Double {
+        return 0.0
+    }
+}
+class Rectangle(name: String, val width: Double, val height: Double) : Shape(name) {
+    override fun area(): Double {
+        return width * height
+    }
+}
+
+// abstract class
+abstract class Shape(val name: String) {
+    abstract fun area(): Double
+}
+class Rectangle(name: String, val width: Double, val height: Double) : Shape(name) {
+    override fun area(): Double {
+        return width * height
+    }
+}
+
+// Visibility
+// Public: This can be accessed from anywhere
+// Internal: This can only be accessed from the module code
+// Protected: This can only be accessed from the class defining it and any derived classes
+// Private: This can only be accessed from the scope of the class defining it
+
+// sealed Class
+sealed class Result {
+    data class Success(val message: String) : Result()
+    data class Failure(val error: Throwable) : Result()
+    fun handleResult(result: Result) {
+        when (result) {
+            is Success -> println("Success: ${result.message}")
+            is Failure -> println("Failure: ${result.error}")
+        }
+    }
+}
+
+// data Class
+data class Person(var name: String, var age: Int)
 
 fun main() {
 // Nested Class
@@ -125,6 +167,19 @@ fun main() {
     myButtonInstance2.press() // 2
     myButton.press() // 3
     myButton.press() // 4
+
+// data class
+    var person = Person("Alice", 25)
+    println(person.name) // Output: Alice
+    println(person.age) // Output: 25
+    val (name, age) = person
+    println("Name: $name, Age: $age") // Output: Name: Alice, Age: 25
+    person.name = "Alice2"
+    person.age = 26
+    println(person.name) // Output: Alice2
+    println(person.age) // Output: 26
+    println(person.hashCode()) // 750163080
+    println(person.toString()) // Person(name=Alice2, age=26)
 
 }
 
