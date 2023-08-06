@@ -1,25 +1,114 @@
-1. :s/old/new - 현재 라인의 첫번째 old를 new로 바꿈
-2. :s/old/new/g - 현재 라인의 모든 old를 new로 바꿈
-3. :3,5s/old/new/g - 3,5줄의 모든 old를 new로 바꿈
-4. :%s/old/new/g - 모든 줄의 모든 old를 new로 바꿈
-5. :~~~~~~~~~~/gc - confirm 받으면서 바꿈
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-1. "0p - 가장 최근에 복사한 텍스트를 붙여넣기
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
 
-1. V}D - 다음 paragraph까지 줄 없애기
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 
-1. qj o(Esc) q - 레지스터 j에 아래에 빈줄 하나 넣는 매크로를 추가.
-2. @j - 아래에 빈줄 하나 넣는 매크로 실행.
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+"Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+"Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+"Plugin '~/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
+" Lightline
+Plugin 'itchyny/lightline.vim'
+" NerdTree
+Plugin 'scrooloose/nerdtree'
 
-1. qp viw"0p - 레지스터 p에 현재 단어를 가장 최근에 복사한 텍스트로 바꿔치기 하는 매크로를 추가. (p : paste)
-2. @p - 현재 단어를 가장 최근에 복사한 텍스트로 바꿔치기 하는 매크로 실행.
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
 
-1. qu Lzt q - 레지스터 u에 맨 아랫줄을 맨 위로 올리는 매크로를 추가. (u : up)
-2. @u - 맨 아랫줄을 맨 위로 올리는 매크로 실행.
+" Lightline
+set noshowmode
+set laststatus=2
+autocmd VimEnter * call lightline#update()
+let g:lightline = {
+      \ 'colorscheme': 'deus',
+      \ }
 
-1. qh HVL q - 레지스터 h에 현재 화면에 보이는 영역을 모두 블럭 지정하는 매크로를 추가. (h : highlight)
-2. @h - 현재 화면에 보이는 영역을 모두 블럭 지정하는 매크로 실행.
+" NERDTree
+nnoremap <C-n> :NERDTreeToggle<CR>
+"Start NERDTree and put the cursor back in the other window.
+"autocmd VimEnter * NERDTree | wincmd p
+"Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endifKey Remaps
 
-1. ctrl+a - 블럭 지정 영역의 번호를 111111111 규칙으로 올림
-2. g+ctrl+a - 블럭 지정 영역의 번호를 123456789 규칙으로 올림
+" line number
+set nu
+set relativenumber
 
+" search
+set hls
+set ignorecase
+set incsearch
+
+" Indent
+set smartindent
+set expandtab
+set tabstop=4
+set shiftwidth=4
+
+" Automatically read files when they are changed externally
+set autoread
+
+" Show matching (, {, [, etc.
+set showmatch
+
+" Cursor Shape
+let &t_SI .= "\e[6 q"
+let &t_EI .= "\e[2 q"
+
+" Scrolloff
+set scrolloff=2
+
+" Highlight current line
+set cursorline
+
+"커서를 파일의 마지막으로 수정된 위치로 이동
+au BufReadPost *
+\ if line("'\"") > 0 && line("'\"") <= line("$") |
+\ exe "norm g`\"" |
+\ endif
+
+""" Key Remap
+" Map 'Alt ;', 'Ctrl j' to exit insert mode and move to the position of the last change
+inoremap <expr> <M-;> "<Esc>l"
+inoremap <expr> <C-j> "<Esc>l"
+" some plain inha inha inha hi inha inha text
+inoremap <expr> <Esc> "<Esc>l"
+" Map 'Ctrl o' to make blank line under current line
+nnoremap <expr> <C-o> "o<Esc>k"
+" Map '<', '>' to '<<', '>>'
+nnoremap <expr> < "<<"
+nnoremap <expr> > ">>"
+" Map 'gp', 'gP' to '"0p', '"0P'
+nnoremap <expr> gp "\"0p"
+nnoremap <expr> gP "\"0P"
